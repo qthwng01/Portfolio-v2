@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hover-svg {
+  @apply text-slate-400
+fill-current
+hover:text-slate-100
+md:text-slate-400
+  md:fill-current
+md:hover:text-slate-100
+lg:text-slate-400 
+  lg:fill-current
+lg:hover:text-slate-100;
+}
+
+.box-shadow-project-lg {
+  @apply
+  lg:border-none lg:overflow-auto lg:transition-all 
+  lg:shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)]
+}
