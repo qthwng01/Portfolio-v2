@@ -22,37 +22,6 @@ export default function IndexPage({ projects }) {
   const handleScrollClick = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
-  // const products = [
-  //   {
-  //     id: 1,
-  //     name: 'Basic Tee',
-  //     href: '#',
-  //     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-  //     imageAlt: "Front of men's Basic Tee in black.",
-  //     price: '$35',
-  //     color: 'Black',
-  //     description:
-  //       'So I started to walk into the water. I wont lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me.',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Basic Tee 2',
-  //     href: '#',
-  //     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-  //     imageAlt: "Front of men's Basic Tee in black.",
-  //     price: '$35',
-  //     color: 'Black',
-  //     description:
-  //       'So I started to walk into the water. I wont lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me.',
-  //   },
-  // ]
-  // const [projects, setProjects] = useState([])
-  // const getData = async () => {
-  //   const query = `*[_type == "project"]`
-  //   const data = await client.fetch(query)
-  //   return setProjects(data)
-  // }
-  // getData()
 
   return (
     <div className={'relative overflow-hidden bg-slate-900 leading-relaxed text-slate-400 antialiased selection:bg-teal-300 selection:text-teal-900'}>
@@ -328,8 +297,8 @@ export default function IndexPage({ projects }) {
 const client = createClient({
   projectId: 'cjyi8mde',
   dataset: 'production',
-  apiVersion: '2021-10-21',
-  useCdn: true,
+  apiVersion: '2023-10-28',
+  useCdn: false,
 })
 
 const builder = imageUrlBuilder(client)
