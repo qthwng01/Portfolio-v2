@@ -329,7 +329,7 @@ const client = createClient({
   projectId: 'cjyi8mde',
   dataset: 'production',
   apiVersion: '2021-10-21',
-  useCdn: false,
+  useCdn: true,
 })
 
 const builder = imageUrlBuilder(client)
