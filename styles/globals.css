@@ -35,7 +35,20 @@ lg:hover:text-slate-100;
 }
 
 .box-shadow-project-lg {
-  @apply
-  lg:border-none lg:overflow-auto lg:transition-all 
-  lg:shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)]
+  @apply lg:border-none lg:overflow-auto lg:transition-all 
+  lg:shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)];
+}
+
+.aos {
+  @apply opacity-0;
+}
+
+.active {
+  @apply opacity-100
+   animate-fade-up
+  animate-delay-[5ms];
+}
+
+.active .fade-up {
+  @apply animate-fade-up;
 }

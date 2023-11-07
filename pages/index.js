@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import Image from 'next/image'
 import logo from '../public/mark.svg'
 import avatar from '../public/me.png'
@@ -10,12 +10,15 @@ import csharp from '../public/csharp.svg'
 import tailwindcss from '../public/tailwindcss.svg'
 import sanity from '../public/sanity.svg'
 import typescript from '../public/typeScript.svg'
+import heroLeft from '../public/hero-bg-square.svg'
+import heroRight from '../public/hero-bg-circle.svg'
+import flashcard from '../public/flashcard-light.png'
 import Tech from './tech'
 import { createClient } from 'next-sanity'
 import imageUrlBuilder from '@sanity/image-url'
+import Link from 'next/link'
 
 export default function IndexPage({ projects }) {
-  const [darkMode, setDarkMode] = useState(false)
   const projectRef = useRef(null)
   const techRef = useRef(null)
   const aboutRef = useRef(null)
@@ -23,11 +26,31 @@ export default function IndexPage({ projects }) {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Animate on scroll
+  const AOS = () => {
+    let items = document.querySelectorAll('.aos')
+    document.addEventListener('scroll', (event) => {
+      items.forEach((item) => {
+        if (item.offsetTop - window.scrollY < 350) {
+          item.classList.add('active')
+        }
+      })
+    })
+    return items
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', AOS)
+    return () => {
+      window.removeEventListener('scroll', AOS)
+    }
+  }, [])
+
   return (
     <div className={'relative overflow-hidden bg-slate-900 leading-relaxed text-slate-400 antialiased selection:bg-teal-300 selection:text-teal-900'}>
-      <main className="bg-[#0F1624] min-h-screen overflow-y-auto max-w-screen-xl px-6 pt-[2rem] pb-[2rem] md:overflow-y-auto md:min-h-screen md:max-w-full lg:min-h-screen lg:max-w-full">
+      <main className="bg-[#0F1624] min-h-screen overflow-y-auto max-w-screen-xl px-6 pt-[2rem] pb-[2rem] md:overflow-y-auto md:min-h-screen md:max-w-full md:relative lg:min-h-screen lg:max-w-full lg:relative">
         {/* Section Navbar */}
-        <header>
+        <header className="relative z-50">
           <nav className="lg:px-8" aria-label="Global">
             <div className="flex items-center justify-between lg:flex lg:flex-1 lg:mx-2 lg:items-center">
               <Image className="rounded-xl h-8 w-auto" src={logo} width={35} height={35} alt="logo" />
@@ -94,7 +117,7 @@ export default function IndexPage({ projects }) {
           </nav>
         </header>
         {/* Hero */}
-        <section>
+        <section className="animate-fade-left">
           <div className="mt-[66px] font-bold text-center">
             <h3 className="text-3xl text-slate-200 lg:text-4xl lg:my-4">Xin Chào,</h3>
             <h3 className="text-slate-200 text-3xl lg:text-4xl lg:my-4">
@@ -114,16 +137,22 @@ export default function IndexPage({ projects }) {
               </a>
             </button>
           </div>
+          <Image src={flashcard} alt="decorator" className="absolute -z-50 top-[50%] left-[50%] -translate-x-2/4 -translate-y-1/2"></Image>
         </section>
         {/* Project */}
-        <section className="mt-[88px] lg:mt-[88px]" ref={projectRef}>
-          <div className="mx-auto max-w-2xl text-center lg:mt-[122px] lg:max-w-6xl lg:flex lg:flex-col lg:items-center">
-            <h2 className="text-2xl font-bold tracking-light text-slate-200">Projects</h2>
-            <div className="mt-10 grid grid-cols-1 gap-y-10 lg:grid lg:grid-cols-2 lg:max-w-4xl lg:gap-x-10">
+        <section
+          className="mt-[88px] lg:mt-[88px] animate-fade-up animate-once animate-ease-linear relative md:relative lg:relative"
+          ref={projectRef}
+        >
+          <div className="mx-auto max-w-2xl text-center md:max-w-full lg:mt-[122px] lg:max-w-6xl lg:flex lg:flex-col lg:items-center">
+            <h2 className="flex items-center justify-center text-2xl font-bold text-slate-200 before:relative before:h-[2px] before:bg-[#233554] before:block before:mr-4 before:w-full before:max-w-[200px] after:relative after:bg-[#233554] after:block after:h-[2px] after:ml-4 after:w-full after:max-w-[200px]">
+              Projects
+            </h2>
+            <div className="mt-10 grid grid-cols-1 gap-y-10 md:grid md:grid-cols-2 md:gap-x-10 lg:grid lg:grid-cols-2 lg:max-w-4xl lg:gap-x-10">
               {projects.map((item) => (
                 <div
                   key={item._id}
-                  className="border-2 border-slate-600 rounded-xl shadow-lg shadow-blue-500/50 lg:rounded-[4px] lg:bg-[#112240] lg:border-none lg:overflow-auto lg:transition-all lg:shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)]"
+                  className="border-2 border-slate-900 rounded-lg shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)] lg:rounded-[4px] lg:bg-[#112240] lg:border-none lg:overflow-auto lg:transition-all lg:shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)]"
                 >
                   <div className="w-full p-2 overflow-hidden lg:mx-auto lg:max-w-full lg:flex lg:flex-row lg:justify-center lg:mt-4">
                     <Image
@@ -135,7 +164,7 @@ export default function IndexPage({ projects }) {
                     ></Image>
                   </div>
                   <Tech name={item?.name} technologies={item?.technologies} />
-                  <div className="m-3">
+                  <div className="m-3 animate__backInUp">
                     <p className="text-slate-400 text-sm leading-normal text-justify tracking-tight">{item?.description[0].children[0].text}</p>
                   </div>
                 </div>
@@ -149,12 +178,24 @@ export default function IndexPage({ projects }) {
               </button>
             </div>
           </div>
+          <Image
+            src={heroLeft}
+            alt="decoration"
+            className="hidden md:absolute md:left-[-30%] md:top-[10%] md:-z-50 lg:block lg:absolute lg:left-[10px] lg:top-[10%] lg:-z-50"
+          ></Image>
+          <Image
+            src={heroRight}
+            alt="decoration"
+            className="hidden md:absolute md:right-[-30%] md:bottom-[20px] md:-z-50 lg:block lg:absolute lg:right-[30px] lg:bottom-[20px] lg:-z-50"
+          ></Image>
         </section>
         {/* Tech */}
-        <section ref={techRef}>
+        <section ref={techRef} className="aos">
           <div className="py-24">
-            <div className="mx-auto max-w-7xl px-6">
-              <h2 className="text-center text-2xl font-bold tracking-light text-slate-200 leading-8">Technologies</h2>
+            <div className="mx-auto">
+              <h2 className="text-2xl font-bold tracking-light text-slate-200 leading-8 relative flex items-center justify-center before:relative before:h-[2px] before:bg-[#233554] before:block before:mr-4 before:w-full before:max-w-[200px] after:relative after:bg-[#233554] after:block after:h-[2px] after:ml-4 after:w-full after:max-w-[200px]">
+                Technologies
+              </h2>
             </div>
             <p className="mt-4 text-center text-slate-200 opacity-80 transform-none leading-normal lg:text-2xl lg:leading-9 lg:max-w-full lg:mx-auto">
               There are many technologies that I really want to learn. Technologies that I have used recently
@@ -165,75 +206,79 @@ export default function IndexPage({ projects }) {
                 src={js}
                 alt="Javascript"
                 title="Javascript"
-                sizes='100vw'
+                sizes="100vw"
               />
               <Image
                 className="col-span-1 object-contain w-[40px] h-[44px] mx-auto lg:col-span-1 lg:w-[80px] lg:h-[80px]"
                 src={react}
                 alt="React"
                 title="React"
-                sizes='100vw'
+                sizes="100vw"
               />
               <Image
                 className="col-span-1 object-contain w-[40px] h-[44px] mx-auto lg:col-span-1 lg:w-[80px] lg:h-[80px]"
                 src={redux}
                 title="Redux"
                 alt="Redux"
-                sizes='100vw'
+                sizes="100vw"
               />
               <Image
                 className="col-span-1 object-contain w-[40px] h-[44px] mx-auto lg:col-span-1 lg:w-[80px] lg:h-[80px]"
                 src={tailwindcss}
                 title="Tailwind CSS"
                 alt="Tailwind CSS"
-                sizes='100vw'
+                sizes="100vw"
               />
               <Image
                 className="col-span-1 object-contain w-[40px] h-[44px] mx-auto lg:col-span-1 lg:w-[80px] lg:h-[80px]"
                 src={csharp}
                 alt="C#"
                 title="C#"
-                sizes='100vw'
+                sizes="100vw"
               />
               <Image
                 className="col-span-1 object-contain w-[40px] h-[44px] mx-auto lg:col-span-1 lg:w-[80px] lg:h-[80px]"
                 src={net}
                 alt="ASP.NET CORE"
                 title="ASP.NET CORE"
-                sizes='100vw'
+                sizes="100vw"
               />
               <Image
                 className="col-span-1 object-contain w-[40px] h-[44px] mx-auto lg:col-span-1 lg:w-[80px] lg:h-[80px]"
                 src={typescript}
                 alt="Typescript"
                 title="Typescript"
-                sizes='100vw'
+                sizes="100vw"
               />
               <Image
                 className="col-span-1 object-contain w-[40px] h-[44px] mx-auto lg:col-span-1 lg:w-[80px] lg:h-[80px]"
                 src={sanity}
                 alt="Sanity"
                 title="Sanity"
-                sizes='100vw'
+                sizes="100vw"
               />
             </div>
           </div>
         </section>
         {/* About me */}
-        <section ref={aboutRef}>
+        <section ref={aboutRef} className="aos">
           <div className="py-6">
             <div className="mx-auto text-center">
-              <h2 className="text-slate-200 text-2xl font-bold">About me</h2>
+              <h2 className="text-slate-200 text-2xl font-bold relative flex items-center justify-center whitespace-nowrap before:relative before:h-[2px] before:bg-[#233554] before:block before:mr-4 before:w-full before:max-w-[200px] after:relative after:bg-[#233554] after:block after:h-[2px] after:ml-4 after:w-full after:max-w-[200px]">
+                About me
+              </h2>
             </div>
             <div className="mx-auto max-w-2xl lg:max-w-4xl">
-              <Image
-                src={avatar}
-                className="mx-auto mt-6 w-full max-w-[200px] h-40 border rounded-[50%] bg-white"
-                width={0}
-                height={0}
-                sizes="100vw"
-                alt="avatar"
-              ></Image>
+              <div>
+                <Image
+                  src={avatar}
+                  className="mx-auto mt-6 w-full max-w-[200px] h-40 border rounded-[50%] bg-white"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  alt="avatar"
+                ></Image>
+              </div>
               <div className="mt-10 flex flex-row items-end justify-center">
                 <div className="text-center text-sm leading-normal tracking-tight lg:text-2xl lg:leading-9">
                   <p>My name is Ho Quoc Thang, and I have graduated from Cao Thang Technical College.</p>
@@ -254,8 +299,10 @@ export default function IndexPage({ projects }) {
         </section>
         {/* Contact */}
         <section>
-          <div className="mx-auto mt-4 text-center">
-            <h2 className="text-slate-200 text-2xl font-bold">Contact</h2>
+          <div className="mx-auto mt-4">
+            <h2 className="text-slate-200 text-2xl font-bold flex items-center justify-center before:relative before:h-[2px] before:bg-[#233554] before:block before:mr-4 before:w-full before:max-w-[200px] after:relative after:bg-[#233554] after:block after:h-[2px] after:ml-4 after:w-full after:max-w-[200px]">
+              Contact
+            </h2>
           </div>
           <div className="mx-auto mt-4 flex flex-row items-center justify-center">
             <a href="https://github.com/qthwng01" rel="noopener noreferrer" target="_blank" className="mx-2">
@@ -276,7 +323,14 @@ export default function IndexPage({ projects }) {
               </svg>
             </a>
             <a href="mailto:qthwng.01@gmail.com" rel="noopener noreferrer" target="_blank" className="mx-2">
-              <svg className="hover-svg lg:w-[36px] h-[36px]" width="24" height="24" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                className="hover-svg lg:w-[36px] h-[36px]"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path d="M2 2c-.438 0-.786.039-1.078.148-.292.11-.526.31-.664.561C-.019 3.211.01 3.823 0 4.662v6.676c.01.839-.019 1.451.258 1.953.138.251.372.45.664.56.292.11.64.149 1.078.149h12c.439 0 .786-.039 1.078-.148.293-.11.528-.31.666-.561.277-.502.246-1.114.256-1.953V4.662c-.01-.839.021-1.451-.256-1.953a1.258 1.258 0 0 0-.666-.56C14.786 2.039 14.438 2 14 2zm0 1h12c.38 0 .606.039.727.084.083.031.127.08.142.107.095.172.12.615.131 1.473v6.674c-.01.855-.036 1.299-.13 1.47a.27.27 0 0 1-.143.108c-.121.045-.347.084-.727.084H2c-.38 0-.606-.039-.726-.084a.257.257 0 0 1-.141-.107c-.096-.174-.123-.617-.133-1.471V4.664c.01-.856.037-1.299.133-1.473a.257.257 0 0 1 .14-.107C1.394 3.039 1.621 3 2 3zm.537 1.578l-.285.438 5.873 4.22L14 5l-.285-.422-5.59 3.373z" />
               </svg>
             </a>
@@ -284,9 +338,25 @@ export default function IndexPage({ projects }) {
         </section>
         <footer>
           <div className="mx-auto my-4 text-center">
-            <p className="text-slate-200 text-sm lg:text-xl">
-              Designed and made by <b>Quoc Thang @2023</b>
+            <p className="text-sm lg:text-xl">
+              Designed and made by{' '}
+              <b>
+                <Link href={'https://github.com/qthwng01'}>Quoc Thang</Link>
+              </b>
+              . Built with{' '}
+              <Link href={''}>
+                <b>NextJS</b>, <b>Tailwind CSS</b>
+              </Link>
+              , content by{' '}
+              <Link href={''}>
+                <b>Sanity</b>
+              </Link>{' '}
+              and deloy by{' '}
+              <Link href={''}>
+                <b>Vercel.</b>
+              </Link>
             </p>
+            <p></p>
           </div>
         </footer>
       </main>
@@ -308,7 +378,7 @@ function urlFor(source) {
 }
 
 export async function getStaticProps() {
-  const projects = await client.fetch(`*[_type == "project"]`)
+  const projects = await client.fetch(`*[_type == "project"]`, { cache: 'no-store' })
 
   return {
     props: {
