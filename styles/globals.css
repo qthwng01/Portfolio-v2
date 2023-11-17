@@ -43,12 +43,12 @@ lg:hover:text-slate-100;
   @apply opacity-0;
 }
 
-.active {
+.active_animation {
   @apply opacity-100
-   animate-fade-up
+  animate-fade-up
   animate-delay-[5ms];
 }
 
-.active .fade-up {
+.active_animation .fade-up {
   @apply animate-fade-up;
 }

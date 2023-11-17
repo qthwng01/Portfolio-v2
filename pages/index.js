@@ -14,9 +14,9 @@ import heroLeft from '../public/hero-bg-square.svg'
 import heroRight from '../public/hero-bg-circle.svg'
 import flashcard from '../public/flashcard-light.png'
 import Tech from './tech'
-import { createClient } from 'next-sanity'
-import imageUrlBuilder from '@sanity/image-url'
+import { createClient, groq } from 'next-sanity'
 import Link from 'next/link'
+import { PortableText } from '@portabletext/react'
 
 export default function IndexPage({ projects }) {
   const projectRef = useRef(null)
@@ -32,7 +32,9 @@ export default function IndexPage({ projects }) {
     document.addEventListener('scroll', (event) => {
       items.forEach((item) => {
         if (item.offsetTop - window.scrollY < 350) {
-          item.classList.add('active')
+          item.classList.add('active_animation')
+        } else {
+          item.classList.remove('active_animation')
         }
       })
     })
@@ -149,23 +151,19 @@ export default function IndexPage({ projects }) {
               Projects
             </h2>
             <div className="mt-10 grid grid-cols-1 gap-y-10 md:grid md:grid-cols-2 md:gap-x-10 lg:grid lg:grid-cols-2 lg:max-w-4xl lg:gap-x-10">
-              {projects.map((item) => (
+              {projects?.map((item) => (
                 <div
                   key={item._id}
                   className="border-2 border-slate-900 rounded-lg shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)] lg:rounded-[4px] lg:bg-[#112240] lg:border-none lg:overflow-auto lg:transition-all lg:shadow-[0_10px_30px_15px_rgba(2,17,27,0.7)]"
                 >
-                  <div className="w-full p-2 overflow-hidden lg:mx-auto lg:max-w-full lg:flex lg:flex-row lg:justify-center lg:mt-4">
-                    <Image
-                      src={urlFor(item?.image).url()}
-                      width={380}
-                      height={200}
-                      alt={''}
-                      className="lg:object-cover lg:border lg:rounded-md"
-                    ></Image>
+                  <div className="w-full max-h-[220px] p-2 overflow-hidden lg:mx-auto lg:max-w-full lg:max-h-[220px] lg:flex lg:flex-row lg:justify-center lg:mt-4">
+                    <Image src={item?.imageURL} width={380} height={200} alt={'image'} className="lg:object-cover lg:border lg:rounded-md"></Image>
                   </div>
-                  <Tech name={item?.name} technologies={item?.technologies} />
+                  <Tech name={item?.name} technologies={item?.technologies} link={item?.link} />
                   <div className="m-3 animate__backInUp">
-                    <p className="text-slate-400 text-sm leading-normal text-justify tracking-tight">{item?.description[0].children[0].text}</p>
+                    <div className="text-slate-400 text-sm leading-normal text-justify tracking-tight">
+                      <PortableText value={item?.description} />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -178,16 +176,16 @@ export default function IndexPage({ projects }) {
               </button>
             </div>
           </div>
-          <Image
-            src={heroLeft}
-            alt="decoration"
-            className="hidden md:absolute md:left-[-30%] md:top-[10%] md:-z-50 lg:block lg:absolute lg:left-[10px] lg:top-[10%] lg:-z-50"
-          ></Image>
-          <Image
+          {/* <Image
             src={heroRight}
             alt="decoration"
-            className="hidden md:absolute md:right-[-30%] md:bottom-[20px] md:-z-50 lg:block lg:absolute lg:right-[30px] lg:bottom-[20px] lg:-z-50"
-          ></Image>
+            className="hidden md:absolute md:left-[-30%] md:top-[10%] md:-z-50 lg:block lg:absolute lg:left-[5%] lg:top-[10%] lg:-z-50"
+          ></Image> */}
+          {/* <Image
+            src={drawing}
+            alt="decoration"
+            className="hidden md:absolute md:right-[-30%] md:bottom-[20px] md:-z-50 lg:block lg:absolute lg:right-[5%] lg:bottom-[-5%] lg:-z-50"
+          ></Image> */}
         </section>
         {/* Tech */}
         <section ref={techRef} className="aos">
@@ -371,14 +369,18 @@ const client = createClient({
   useCdn: false,
 })
 
-const builder = imageUrlBuilder(client)
-
-function urlFor(source) {
-  return builder.image(source)
-}
-
 export async function getStaticProps() {
-  const projects = await client.fetch(`*[_type == "project"]`, { cache: 'no-store' })
+  const projects = await client.fetch(
+    groq`*[_type == "project"] {
+    _id,
+    name,
+    link,
+    description,
+    technologies,
+    "imageURL": image.asset->url,
+  }`,
+    { cache: 'no-store' }
+  )
 
   return {
     props: {
