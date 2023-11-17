@@ -10,8 +10,8 @@ import csharp from '../public/csharp.svg'
 import tailwindcss from '../public/tailwindcss.svg'
 import sanity from '../public/sanity.svg'
 import typescript from '../public/typeScript.svg'
-import heroLeft from '../public/hero-bg-square.svg'
-import heroRight from '../public/hero-bg-circle.svg'
+// import heroLeft from '../public/hero-bg-square.svg'
+// import heroRight from '../public/hero-bg-circle.svg'
 import flashcard from '../public/flashcard-light.png'
 import Tech from './tech'
 import { createClient, groq } from 'next-sanity'
@@ -159,7 +159,7 @@ export default function IndexPage({ projects }) {
                   <div className="w-full max-h-[220px] p-2 overflow-hidden lg:mx-auto lg:max-w-full lg:max-h-[220px] lg:flex lg:flex-row lg:justify-center lg:mt-4">
                     <Image src={item?.imageURL} width={380} height={200} alt={'image'} className="lg:object-cover lg:border lg:rounded-md"></Image>
                   </div>
-                  <Tech name={item?.name} technologies={item?.technologies} link={item?.link} />
+                  <Tech name={item?.name} technologies={item?.technologies} linkProject={item?.link} />
                   <div className="m-3 animate__backInUp">
                     <div className="text-slate-400 text-sm leading-normal text-justify tracking-tight">
                       <PortableText value={item?.description} />

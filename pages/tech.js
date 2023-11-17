@@ -1,19 +1,17 @@
 import Link from 'next/link'
 
-function Tech({ name, technologies, link }) {
+function Tech(props) {
+  const { name, technologies, linkProject } = props
+
   return (
     <div className="text-center">
-      <h3 className="text-slate-200 text-xl font-bold mt-2">
-        {link === null ? (
-          <Link href="#" alt="link project">
-            {name}
-          </Link>
-        ) : (
-          <Link href={link} alt="link project" target="_blank">
-            {name}
-          </Link>
-        )}
-      </h3>
+      {!linkProject ? (
+        <h3 className="text-slate-200 text-xl font-bold mt-2">{name}</h3>
+      ) : (
+        <Link href={linkProject} alt="link project" target="_blank">
+          <h3 className="text-slate-200 text-xl font-bold mt-2">{name}</h3>
+        </Link>
+      )}
       {technologies?.map((tech, index) => (
         <span
           key={index}
