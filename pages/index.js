@@ -134,7 +134,7 @@ export default function IndexPage({ projects }) {
           </div>
           <div className="text-center mt-8">
             <button className="text-white text-sm bg-gradient-to-r from-[#13ADC7] via-[#6978D1] to-[#945DD6] font-bold border border-none rounded-3xl p-3 hover:text-violet-800 focus:outline-none focus:ring focus:ring-violet-700 lg:text-xl">
-              <a href="https://drive.google.com/file/d/1GmARd_s_iyrUaH41C42jY8qw5WD0D2Wm/view?usp=sharing" rel="noopener noreferrer" target="_blank">
+              <a href="https://drive.google.com/file/d/167kO1B1gfvvOYRXdWOFf0QDNPUyOEmFA/view?usp=drive_link" rel="noopener noreferrer" target="_blank">
                 My Resume
               </a>
             </button>
