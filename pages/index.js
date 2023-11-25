@@ -33,7 +33,7 @@ export default function IndexPage({ projects }) {
       items.forEach((item) => {
         if (item.offsetTop - window.scrollY < 350) {
           item.classList.add('active_animation')
-        } else {
+        } else if (item.offsetTop - window.scrollY > 650) {
           item.classList.remove('active_animation')
         }
       })
@@ -97,19 +97,19 @@ export default function IndexPage({ projects }) {
                 </ul>
               </div>
             </div>
-            <div className="flex items-center justify-center mt-6 lg:mt-10 lg:flex lg:gap-x-12">
+            <div className="flex flex-col items-center justify-center mt-6 lg:mt-10 lg:flex lg:gap-x-12">
               <ul className="inline-flex items-center font-bold">
-                <li className="mx-4 text-slate-200 text-md lg:text-2xl lg:mx-20">
+                <li className="mx-2 text-slate-200 text-[14px] lg:text-2xl lg:mx-20">
                   <a className="cursor-pointer" onClick={() => handleScrollClick(projectRef)}>
                     Projects
                   </a>
                 </li>
-                <li className="mx-4 text-slate-200 text-md lg:text-2xl lg:mx-20">
+                <li className="mx-2 text-slate-200 text-[14px] lg:text-2xl lg:mx-20">
                   <a className="cursor-pointer" onClick={() => handleScrollClick(techRef)}>
                     Technologies
                   </a>
                 </li>
-                <li className="mx-4 text-slate-200 text-md lg:text-2xl lg:mx-20">
+                <li className="mx-2 text-slate-200 text-[14px] lg:text-2xl lg:mx-20">
                   <a className="cursor-pointer" onClick={() => handleScrollClick(aboutRef)}>
                     About me
                   </a>
